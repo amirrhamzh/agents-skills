@@ -60,6 +60,10 @@ Restart OpenCode / Antigravity, buka folder project baru, lalu ketik:
 Saya punya ide aplikasi [jelaskan ide singkat], buatkan PRD-nya.
 ```
 
+## Dukungan
+
+Jika kumpulan skill ini membantu alur *vibe coding* Anda, Anda dapat memberi dukungan melalui [Trakteer](https://trakteer.id/amirrhamzh).
+
 ## Lisensi
 
 Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT) dan [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT).
