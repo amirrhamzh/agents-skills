@@ -59,3 +59,7 @@ Restart OpenCode / Antigravity, buka folder project baru, lalu ketik:
 ```text
 Saya punya ide aplikasi [jelaskan ide singkat], buatkan PRD-nya.
 ```
+
+## Lisensi
+
+Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT) dan [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT).
