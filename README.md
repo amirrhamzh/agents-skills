@@ -16,10 +16,10 @@
 
 ## Instalasi Lengkap (Windows 11 PowerShell)
 
-### 1. Instal Skill Eksternal ke `~/.agents/skills/`
+### 1. Instal Skill Eksternal
 
 ```powershell
-# 1) 67 skill spesialis (hanya folder skills/)
+# 1) farmage/opencode-skills (67 skill spesialis)
 git clone --depth 1 https://github.com/farmage/opencode-skills.git "$env:TEMP\opencode-skills"
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills" | Out-Null
 Copy-Item "$env:TEMP\opencode-skills\skills\*" "$env:USERPROFILE\.agents\skills" -Recurse -Force
@@ -30,16 +30,21 @@ npm install -g ui-ux-pro-max-cli
 uipro init --ai universal --global
 ```
 
-### 2. Salin Skill Repo Ini & Symlink ke OpenCode + Antigravity
+*(Pengguna macOS/Linux/Git Bash juga bisa menjalankan `git clone https://github.com/farmage/opencode-skills.git && cd opencode-skills && ./install.sh`).*
+
+### 2. Instal Repo Ini & Symlink Global
 
 ```powershell
-# Salin 7 skill & aturan hemat token
-Copy-Item ".\skills\*" "$env:USERPROFILE\.agents\skills" -Recurse -Force
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\config\rules" | Out-Null
-Copy-Item ".\AGENT_EFFICIENCY.md" "$env:USERPROFILE\.gemini\config\rules\AGENT_EFFICIENCY.md" -Force
-Copy-Item ".\AGENT_EFFICIENCY.md" "$env:USERPROFILE\.config\opencode\AGENTS.md" -Force
+# 1) Clone repo ini & salin 7 skill + aturan hemat token
+git clone --depth 1 https://github.com/amirrhamzh/agents-skills.git "$env:TEMP\agents-skills"
+Copy-Item "$env:TEMP\agents-skills\skills\*" "$env:USERPROFILE\.agents\skills" -Recurse -Force
 
-# Hapus folder skills lama lalu buat Junction
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\config\rules", "$env:USERPROFILE\.config\opencode" | Out-Null
+Copy-Item "$env:TEMP\agents-skills\AGENT_EFFICIENCY.md" "$env:USERPROFILE\.gemini\config\rules\AGENT_EFFICIENCY.md" -Force
+Copy-Item "$env:TEMP\agents-skills\AGENT_EFFICIENCY.md" "$env:USERPROFILE\.config\opencode\AGENTS.md" -Force
+Remove-Item "$env:TEMP\agents-skills" -Recurse -Force
+
+# 2) Hapus folder skills lama lalu buat Junction ke ~/.agents/skills
 Remove-Item "$env:USERPROFILE\.config\opencode\skills", "$env:USERPROFILE\.gemini\config\skills" -Recurse -Force -ErrorAction SilentlyContinue
 New-Item -ItemType Junction -Path "$env:USERPROFILE\.config\opencode\skills" -Target "$env:USERPROFILE\.agents\skills"
 New-Item -ItemType Junction -Path "$env:USERPROFILE\.gemini\config\skills" -Target "$env:USERPROFILE\.agents\skills"
