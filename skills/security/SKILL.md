@@ -2,14 +2,15 @@
 name: security
 description: Buat standar keamanan aplikasi sebelum tahap Task dan simpan ke .agents/SECURITY.md. Gunakan saat user menulis "security aplikasi", "keamanan aplikasi", "buatkan security", "amankan aplikasi", "standar keamanan", atau "lanjut security".
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
 ---
 # Security (Tahap 4)
 
 ## Koneksi Skill Eksternal
 
-- Muat `secure-code-guardian` untuk menyusun standar implementasi aman & mitigasi OWASP sesuai stack di `./.agents/TECHSTACK.md`.
-- Tetapkan `security-reviewer` sebagai skill audit keamanan wajib pada tahap `verify`.
+- Muat `secure-code-guardian` untuk standar implementasi aman & mitigasi OWASP sesuai `./.agents/TECHSTACK.md`.
+- Gunakan `security-audit` (mode *guidance*) untuk memetakan *trust boundaries* & *attack classes* relevan (auth, client-side, data isolation, cloud, atau AI/LLM) ke dalam `./.agents/SECURITY.md`.
+- Tetapkan `security-reviewer` (audit cepat) dan `security-audit` (audit mendalam berbasis bukti) untuk tahap `verify`.
 
 ## Alur Kerja
 
@@ -20,7 +21,7 @@ metadata:
    3. **Keamanan Data & Upload**: A) Password Hash (`Argon2id`/`bcrypt`) + RLS/Filter Kepemilikan + Masking PII | B) Validasi Upload (MIME magic bytes, batas ukuran, UUID filename) | C) Enkripsi Kolom Sensitif
    4. **Headers & Secrets**: A) Security Headers Lengkap (CSP, HSTS, X-Frame-Options DENY, nosniff) + Pisah Env Server/Publik | B) Audit CVE Dependensi + Validasi `.env` saat start
 3. **Buat `./.agents/SECURITY.md`**:
-   - Kebijakan auth, matriks akses, skema validasi, rate limit, security headers, dan checklist keamanan untuk `./.agents/TASKS.md`.
+   - Peta *trust boundaries*, kebijakan auth, matriks akses, skema validasi, rate limit, security headers, dan checklist keamanan untuk `./.agents/TASKS.md`.
 4. **Handoff**: Setelah tersimpan, arahkan ke tahap berikutnya: `"buat implementasi task"` (`tasks`).
 
 ## Aturan Keamanan Mutlak

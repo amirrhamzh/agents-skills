@@ -2,7 +2,7 @@
 name: verify
 description: Verifikasi hasil akhir aplikasi (build, test, PRD, Tech Stack, Design, Security) dengan membaca AGENTS.md paling awal tanpa membuat file di .agents/. Gunakan saat user menulis "verifikasi hasil", "verify project", "cek hasil akhir", "audit aplikasi", atau "apakah sudah sesuai prd".
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
 ---
 # Verify (Tahap 7)
 
@@ -11,7 +11,7 @@ metadata:
 Muat skill audit berikut secara berurutan saat memverifikasi hasil akhir:
 - `test-master` (+ `playwright-expert` jika aplikasi web perlu uji E2E) -> validasi unit, integrasi, dan E2E test.
 - `code-reviewer` -> audit kualitas, kerapian, dan potensi bug pada kode.
-- `security-reviewer` -> audit celah keamanan terhadap `./.agents/SECURITY.md`.
+- `security-reviewer` -> audit celah keamanan cepat terhadap `./.agents/SECURITY.md`, atau jalankan `security-audit` untuk audit mendalam 6 fase berbasis bukti (*confirmed / needs_validation*) pada proyek produksi/kritis.
 - `devops-engineer` (opsional saat siap rilis) -> cek kesiapan konfigurasi build & deployment.
 
 ## Alur Kerja
@@ -22,7 +22,7 @@ Muat skill audit berikut secara berurutan saat memverifikasi hasil akhir:
    - Jika ada error, muat `debugging-wizard`, perbaiki kode langsung, dan jalankan ulang hingga kode keluar `0`.
 3. **Audit Kesesuaian Spesifikasi**:
    - **PRD & Tasks**: Semua fitur Must-Have berfungsi penuh dan seluruh ceklis `./.agents/TASKS.md` bertanda `- [x]`.
-   - **Tech Stack & Security** (`security-reviewer`): Sesuai `./.agents/TECHSTACK.md` & `./.agents/SECURITY.md` (validasi input server, anti-injeksi, anti-XSS/CSRF/IDOR, security headers, tanpa hardcoded secret).
+   - **Tech Stack & Security** (`security-reviewer` / `security-audit`): Sesuai `./.agents/TECHSTACK.md` & `./.agents/SECURITY.md` (validasi input server, anti-injeksi, anti-XSS/CSRF/IDOR, security headers, tanpa hardcoded secret).
    - **Design Anti-AI-Slop** (`code-reviewer`): Sesuai `./.agents/DESIGN.md`, 4 state layar lengkap (*Normal/Loading/Empty/Error*), `tabular-nums`, dan responsif.
 4. **Sajikan Laporan Akhir di Chat**: Tampilkan status `LULUS VERIFIKASI (PASSED)`, ringkasan hasil build/test, tabel keterlacakan fitur PRD, checklist kepatuhan Design & Security, serta perintah deploy.
 

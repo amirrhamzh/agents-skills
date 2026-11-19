@@ -1,6 +1,6 @@
 # Vibe Coding Skills (OpenCode & Antigravity)
 
-7 skill modular berbahasa Indonesia + aturan hemat token (`AGENT_EFFICIENCY.md`), terhubung dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) dan [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill).
+7 skill modular berbahasa Indonesia + aturan hemat token (`AGENT_EFFICIENCY.md`), terhubung dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill).
 
 ## Alur 7 Tahap
 
@@ -19,18 +19,24 @@
 ### 1. Instal Skill Eksternal
 
 ```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills" | Out-Null
+
 # 1) farmage/opencode-skills (67 skill spesialis)
 git clone --depth 1 https://github.com/farmage/opencode-skills.git "$env:TEMP\opencode-skills"
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills" | Out-Null
 Copy-Item "$env:TEMP\opencode-skills\skills\*" "$env:USERPROFILE\.agents\skills" -Recurse -Force
 Remove-Item "$env:TEMP\opencode-skills" -Recurse -Force
 
 # 2) UI/UX Pro Max (butuh Node.js & Python 3)
 npm install -g ui-ux-pro-max-cli
 uipro init --ai universal --global
+
+# 3) Cloudflare Security Audit (butuh Node.js)
+git clone --depth 1 https://github.com/cloudflare/security-audit-skill.git "$env:TEMP\security-audit-skill"
+Copy-Item "$env:TEMP\security-audit-skill\skills\security-audit" "$env:USERPROFILE\.agents\skills" -Recurse -Force
+Remove-Item "$env:TEMP\security-audit-skill" -Recurse -Force
 ```
 
-*(Pengguna macOS/Linux/Git Bash juga bisa menjalankan `git clone https://github.com/farmage/opencode-skills.git && cd opencode-skills && ./install.sh`).*
+*(Alternatif CLI resmi: `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit --global`, dan untuk macOS/Linux/Git Bash pada `opencode-skills` dapat memakai `./install.sh`).*
 
 ### 2. Instal Repo Ini & Symlink Global
 
@@ -66,4 +72,4 @@ Jika kumpulan skill ini membantu alur *vibe coding* Anda, Anda dapat memberi duk
 
 ## Lisensi
 
-Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT) dan [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT).
+Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill) (MIT).
