@@ -2,13 +2,14 @@
 name: design
 description: Buat sistem desain Anti-AI-Slop interaktif selaras standar UI/UX Pro Max dan simpan ke .agents/DESIGN.md. Gunakan saat user menulis "desain aplikasi", "buatkan design", "sistem desain", "ui ux aplikasi", "styling aplikasi", atau "agar design tidak ai-slop".
 metadata:
-  version: "2.4.0"
+  version: "2.5.0"
 ---
 # Design Anti-AI-Slop (Tahap 3)
 
 ## Koneksi Skill Eksternal
 
-- Jika `ui-ux-pro-max` terpasang, gunakan untuk mencari rekomendasi palet, tipografi, pola industri (`--design-system` / `--stack`), dan preset animasi (`--domain gsap` opsional untuk landing page/interaksi kompleks), lalu simpan hasilnya ke `./.agents/DESIGN.md`.
+- Jika `ui-ux-pro-max` terpasang, gunakan untuk mencari rekomendasi palet, tipografi, pola industri (`--design-system` / `--stack`), dan preset animasi (`--domain gsap` opsional), lalu simpan hasilnya ke `./.agents/DESIGN.md`.
+- Jika `emilkowalski/skills` terpasang, gunakan `emil-design-eng`, `animate` (web) atau `animate-expo` (React Native/Expo), `choreograph`, `gestures`, dan `mobile-native` untuk detail motion/polish di `./.agents/DESIGN.md` (serta `review-animations` / `break-ui` saat audit UI).
 - Selaraskan pola komponen & styling dengan skill frontend/mobile di `./.agents/TECHSTACK.md` (`nextjs-developer`, `react-expert`, `vue-expert`, `angular-architect`, `react-native-expert`, `flutter-expert`).
 
 ## Alur Kerja

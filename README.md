@@ -1,6 +1,6 @@
 # Vibe Coding Skills (OpenCode & Antigravity)
 
-7 skill modular berbahasa Indonesia + aturan hemat token (`AGENT_EFFICIENCY.md`), terhubung dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill).
+7 skill modular berbahasa Indonesia + aturan hemat token (`AGENT_EFFICIENCY.md`), terhubung dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), [emilkowalski/skills](https://github.com/emilkowalski/skills), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill).
 
 ## Alur 7 Tahap
 
@@ -14,49 +14,35 @@
 | 6 | `review` | Revisi langsung di kode | `"review hasil"` |
 | 7 | `verify` | Laporan audit di chat | `"verifikasi hasil"` |
 
-## Instalasi Lengkap (Windows 11 PowerShell)
+## Instalasi Cepat
 
-### 1. Instal Skill Eksternal
+Prasyarat: `git`, `Node.js` (`npm`), dan `Python 3` (untuk UI/UX Pro Max).
 
-```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills" | Out-Null
-
-# 1) farmage/opencode-skills (67 skill spesialis)
-git clone --depth 1 https://github.com/farmage/opencode-skills.git "$env:TEMP\opencode-skills"
-Copy-Item "$env:TEMP\opencode-skills\skills\*" "$env:USERPROFILE\.agents\skills" -Recurse -Force
-Remove-Item "$env:TEMP\opencode-skills" -Recurse -Force
-
-# 2) UI/UX Pro Max (butuh Node.js & Python 3)
-npm install -g ui-ux-pro-max-cli
-uipro init --ai universal --global
-
-# 3) Cloudflare Security Audit (butuh Node.js)
-git clone --depth 1 https://github.com/cloudflare/security-audit-skill.git "$env:TEMP\security-audit-skill"
-Copy-Item "$env:TEMP\security-audit-skill\skills\security-audit" "$env:USERPROFILE\.agents\skills" -Recurse -Force
-Remove-Item "$env:TEMP\security-audit-skill" -Recurse -Force
-```
-
-*(Alternatif CLI resmi: `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit --global`, dan untuk macOS/Linux/Git Bash pada `opencode-skills` dapat memakai `./install.sh`).*
-
-### 2. Instal Repo Ini & Symlink Global
+### Windows (PowerShell)
 
 ```powershell
-# 1) Clone repo ini & salin 7 skill + aturan hemat token
-git clone --depth 1 https://github.com/amirrhamzh/agents-skills.git "$env:TEMP\agents-skills"
-Copy-Item "$env:TEMP\agents-skills\skills\*" "$env:USERPROFILE\.agents\skills" -Recurse -Force
+# 1) Instal semua skill & aturan hemat token
+irm https://raw.githubusercontent.com/amirrhamzh/agents-skills/main/install-skills.ps1 | iex
 
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\config\rules", "$env:USERPROFILE\.config\opencode" | Out-Null
-Copy-Item "$env:TEMP\agents-skills\AGENT_EFFICIENCY.md" "$env:USERPROFILE\.gemini\config\rules\AGENT_EFFICIENCY.md" -Force
-Copy-Item "$env:TEMP\agents-skills\AGENT_EFFICIENCY.md" "$env:USERPROFILE\.config\opencode\AGENTS.md" -Force
-Remove-Item "$env:TEMP\agents-skills" -Recurse -Force
-
-# 2) Hapus folder skills lama lalu buat Junction ke ~/.agents/skills
-Remove-Item "$env:USERPROFILE\.config\opencode\skills", "$env:USERPROFILE\.gemini\config\skills" -Recurse -Force -ErrorAction SilentlyContinue
-New-Item -ItemType Junction -Path "$env:USERPROFILE\.config\opencode\skills" -Target "$env:USERPROFILE\.agents\skills"
-New-Item -ItemType Junction -Path "$env:USERPROFILE\.gemini\config\skills" -Target "$env:USERPROFILE\.agents\skills"
+# 2) Hubungkan Junction symlink ke OpenCode & Antigravity
+irm https://raw.githubusercontent.com/amirrhamzh/agents-skills/main/setup-symlinks.ps1 | iex
 ```
 
-*(Untuk Antigravity, tambahkan `---\ntrigger: always_on\n---` di baris teratas `~/.gemini/config/rules/AGENT_EFFICIENCY.md`).*
+*(Jika sudah clone repo ini, jalankan `.\install-skills.ps1` lalu `.\setup-symlinks.ps1`.)*
+
+### macOS / Linux / Git Bash
+
+```bash
+# 1) Instal semua skill & aturan hemat token
+curl -fsSL https://raw.githubusercontent.com/amirrhamzh/agents-skills/main/install-skills.sh | bash
+
+# 2) Hubungkan symlink ke OpenCode & Antigravity
+curl -fsSL https://raw.githubusercontent.com/amirrhamzh/agents-skills/main/setup-symlinks.sh | bash
+```
+
+*(Jika sudah clone repo ini, jalankan `chmod +x install-skills.sh setup-symlinks.sh && ./install-skills.sh && ./setup-symlinks.sh`. Folder lama yang bukan symlink akan otomatis di-backup).*
+
+> Alternatif CLI resmi per repo: `npx skills@latest add emilkowalski/skills` dan `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit --global`.
 
 ## Cara Pakai
 
@@ -68,8 +54,8 @@ Saya punya ide aplikasi [jelaskan ide singkat], buatkan PRD-nya.
 
 ## Dukungan
 
-Jika kumpulan skill ini membantu alur *vibe coding* Anda, Anda dapat memberi dukungan melalui [Trakteer](https://trakteer.id/amirrhamzh).
+Jika kumpulan skill ini membantu alur *vibe coding* Anda, Anda dapat memberi dukungan melalui [Trakteer](https://www.google.com/search?q=https://trakteer.id/amirrhamzh).
 
 ## Lisensi
 
-Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill) (MIT).
+Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT), [emilkowalski/skills](https://github.com/emilkowalski/skills) (MIT), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill) (MIT).
