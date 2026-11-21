@@ -2,13 +2,13 @@
 name: prd
 description: Buat PRD interaktif dan simpan ke .agents/PRD.md. Gunakan saat user menulis "saya punya ide", "buatkan prd", "bikin prd", "saya mau buat aplikasi", "ide aplikasi", "rancang aplikasi", atau "mulai project baru".
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
 ---
 # PRD (Tahap 1)
 
 ## Koneksi Skill Eksternal
 
-- Muat `feature-forge` untuk mempertajam spesifikasi & acceptance criteria (atau `spec-miner` jika proyek berbasis kode yang sudah ada).
+- Gunakan `brainstorming` (Superpowers) untuk menggali kebutuhan secara interaktif, lalu muat `feature-forge` untuk mempertajam spesifikasi & acceptance criteria (atau `spec-miner` jika proyek berbasis kode yang sudah ada).
 - Opsional: gunakan `the-fool` untuk menguji asumsi ide agar ruang lingkup MVP tetap tajam.
 
 ## Alur Kerja
@@ -29,5 +29,5 @@ metadata:
 
 ## Aturan
 
-- Simpan output hanya di `./.agents/PRD.md` pada project aktif.
-- Jangan menulis kode atau memilih tech stack secara sepihak di tahap ini.
+- Simpan output hanya di `./.agents/PRD.md` pada project aktif (jangan buat dokumen duplikat di `docs/plans/`).
+- Jangan menulis kode, memilih tech stack, atau lompat ke `writing-plans` sebelum tahap `techstack`, `design`, dan `security` selesai.

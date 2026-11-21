@@ -21,23 +21,27 @@ fi
 
 mkdir -p "$SKILLS_DIR"
 
-echo "[1/5] Menginstal farmage/opencode-skills..."
+echo "[1/6] Menginstal farmage/opencode-skills..."
 git clone --depth 1 https://github.com/farmage/opencode-skills.git "$TMP_DIR/opencode-skills"
 cp -R "$TMP_DIR/opencode-skills/skills/." "$SKILLS_DIR/"
 
-echo "[2/5] Menginstal UI/UX Pro Max..."
+echo "[2/6] Menginstal UI/UX Pro Max..."
 npm install -g ui-ux-pro-max-cli
 uipro init --ai universal --global
 
-echo "[3/5] Menginstal emilkowalski/skills..."
+echo "[3/6] Menginstal emilkowalski/skills..."
 git clone --depth 1 https://github.com/emilkowalski/skills.git "$TMP_DIR/emilkowalski-skills"
 cp -R "$TMP_DIR/emilkowalski-skills/skills/." "$SKILLS_DIR/"
 
-echo "[4/5] Menginstal Cloudflare Security Audit..."
+echo "[4/6] Menginstal Cloudflare Security Audit..."
 git clone --depth 1 https://github.com/cloudflare/security-audit-skill.git "$TMP_DIR/security-audit-skill"
 cp -R "$TMP_DIR/security-audit-skill/skills/security-audit" "$SKILLS_DIR/"
 
-echo "[5/5] Menginstal amirrhamzh/agents-skills & AGENT_EFFICIENCY.md..."
+echo "[5/6] Menginstal obra/superpowers..."
+git clone --depth 1 https://github.com/obra/superpowers.git "$TMP_DIR/superpowers"
+cp -R "$TMP_DIR/superpowers/skills/." "$SKILLS_DIR/"
+
+echo "[6/6] Menginstal amirrhamzh/agents-skills & AGENT_EFFICIENCY.md..."
 SCRIPT_DIR=""
 if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

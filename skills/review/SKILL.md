@@ -2,13 +2,13 @@
 name: review
 description: Pandu peninjauan hasil (User Review) dan revisi interaktif sebelum verifikasi akhir tanpa membuat file di .agents/. Gunakan saat user menulis "review hasil", "cek dulu hasilnya", "lihat hasilnya", "ada yang kurang", "ubah tampilan", atau "revisi fitur".
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
 ---
 # Review (Tahap 6)
 
 ## Koneksi Skill Eksternal
 
-- Jika user menemukan bug saat mencoba hasil, muat `debugging-wizard` untuk investigasi akar masalah.
+- Gunakan `receiving-code-review` (Superpowers) untuk memproses masukan user secara terstruktur, dan muat `systematic-debugging` + `debugging-wizard` jika user menemukan bug saat mencoba hasil.
 - Saat menerapkan revisi kode/UI, muat skill framework aktif dari `./AGENTS.md` (dan `secure-code-guardian` jika perubahan menyentuh auth/API/data).
 
 ## Alur Kerja

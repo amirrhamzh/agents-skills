@@ -1,6 +1,6 @@
 # Vibe Coding Skills (OpenCode & Antigravity)
 
-7 skill modular berbahasa Indonesia + aturan hemat token (`AGENT_EFFICIENCY.md`), terhubung dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), [emilkowalski/skills](https://github.com/emilkowalski/skills), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill).
+7 skill modular berbahasa Indonesia + aturan hemat token (`AGENT_EFFICIENCY.md`), terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), [emilkowalski/skills](https://github.com/emilkowalski/skills), [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill), dan [obra/superpowers](https://github.com/obra/superpowers).
 
 ## Alur 7 Tahap
 
@@ -13,6 +13,8 @@
 | 5 | `tasks` | `.agents/TASKS.md` & `./AGENTS.md` | `"buat implementasi task"` |
 | 6 | `review` | Revisi langsung di kode | `"review hasil"` |
 | 7 | `verify` | Laporan audit di chat | `"verifikasi hasil"` |
+
+*(5 file di `.agents/` adalah sumber kebenaran spesifikasi; `obra/superpowers` berjalan sebagai lapisan disiplin eksekusi: brainstorming, TDD, systematic debugging, code review, dan verification-before-completion tanpa menduplikasi dokumen di `docs/plans/`).*
 
 ## Instalasi Cepat
 
@@ -42,7 +44,7 @@ curl -fsSL https://raw.githubusercontent.com/amirrhamzh/agents-skills/main/setup
 
 *(Jika sudah clone repo ini, jalankan `chmod +x install-skills.sh setup-symlinks.sh && ./install-skills.sh && ./setup-symlinks.sh`. Folder lama yang bukan symlink akan otomatis di-backup).*
 
-> Alternatif CLI resmi per repo: `npx skills@latest add emilkowalski/skills` dan `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit --global`.
+> Alternatif CLI/plugin resmi: `npx skills@latest add emilkowalski/skills`, `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit --global`, atau plugin native Superpowers (`agy plugin install https://github.com/obra/superpowers` di Antigravity).
 
 ## Cara Pakai
 
@@ -58,4 +60,4 @@ Jika kumpulan skill ini membantu alur *vibe coding* Anda, Anda dapat memberi duk
 
 ## Lisensi
 
-Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT), [emilkowalski/skills](https://github.com/emilkowalski/skills) (MIT), dan [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill) (MIT).
+Dirilis di bawah [MIT License](https://www.google.com/search?q=LICENSE). Terintegrasi dengan [farmage/opencode-skills](https://github.com/farmage/opencode-skills) (MIT), [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT), [emilkowalski/skills](https://github.com/emilkowalski/skills) (MIT), [Cloudflare Security Audit](https://github.com/cloudflare/security-audit-skill) (MIT), dan [obra/superpowers](https://github.com/obra/superpowers) (MIT).

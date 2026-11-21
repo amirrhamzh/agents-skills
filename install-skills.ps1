@@ -20,26 +20,31 @@ if (-not (Get-Command "python" -ErrorAction SilentlyContinue) -and -not (Get-Com
 New-Item -ItemType Directory -Force -Path $SkillsDir, $TempDir | Out-Null
 
 try {
-    Write-Host "[1/5] Menginstal farmage/opencode-skills..." -ForegroundColor Cyan
+    Write-Host "[1/6] Menginstal farmage/opencode-skills..." -ForegroundColor Cyan
     $FarmageDir = Join-Path $TempDir "opencode-skills"
     git clone --depth 1 https://github.com/farmage/opencode-skills.git $FarmageDir
     Copy-Item (Join-Path $FarmageDir "skills\*") $SkillsDir -Recurse -Force
 
-    Write-Host "[2/5] Menginstal UI/UX Pro Max..." -ForegroundColor Cyan
+    Write-Host "[2/6] Menginstal UI/UX Pro Max..." -ForegroundColor Cyan
     npm install -g ui-ux-pro-max-cli
     uipro init --ai universal --global
 
-    Write-Host "[3/5] Menginstal emilkowalski/skills..." -ForegroundColor Cyan
+    Write-Host "[3/6] Menginstal emilkowalski/skills..." -ForegroundColor Cyan
     $EmilDir = Join-Path $TempDir "emilkowalski-skills"
     git clone --depth 1 https://github.com/emilkowalski/skills.git $EmilDir
     Copy-Item (Join-Path $EmilDir "skills\*") $SkillsDir -Recurse -Force
 
-    Write-Host "[4/5] Menginstal Cloudflare Security Audit..." -ForegroundColor Cyan
+    Write-Host "[4/6] Menginstal Cloudflare Security Audit..." -ForegroundColor Cyan
     $CfDir = Join-Path $TempDir "security-audit-skill"
     git clone --depth 1 https://github.com/cloudflare/security-audit-skill.git $CfDir
     Copy-Item (Join-Path $CfDir "skills\security-audit") $SkillsDir -Recurse -Force
 
-    Write-Host "[5/5] Menginstal amirrhamzh/agents-skills & AGENT_EFFICIENCY.md..." -ForegroundColor Cyan
+    Write-Host "[5/6] Menginstal obra/superpowers..." -ForegroundColor Cyan
+    $SpDir = Join-Path $TempDir "superpowers"
+    git clone --depth 1 https://github.com/obra/superpowers.git $SpDir
+    Copy-Item (Join-Path $SpDir "skills\*") $SkillsDir -Recurse -Force
+
+    Write-Host "[6/6] Menginstal amirrhamzh/agents-skills & AGENT_EFFICIENCY.md..." -ForegroundColor Cyan
     if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "skills")) -and (Test-Path (Join-Path $PSScriptRoot "AGENT_EFFICIENCY.md"))) {
         $RepoDir = $PSScriptRoot
     } else {
