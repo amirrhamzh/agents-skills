@@ -21,27 +21,48 @@ fi
 
 mkdir -p "$SKILLS_DIR"
 
-echo "[1/6] Menginstal farmage/opencode-skills..."
+echo "[1/7] Menginstal farmage/opencode-skills..."
 git clone --depth 1 https://github.com/farmage/opencode-skills.git "$TMP_DIR/opencode-skills"
 cp -R "$TMP_DIR/opencode-skills/skills/." "$SKILLS_DIR/"
 
-echo "[2/6] Menginstal UI/UX Pro Max..."
+echo "[2/7] Menginstal UI/UX Pro Max..."
 npm install -g ui-ux-pro-max-cli
 uipro init --ai universal --global
 
-echo "[3/6] Menginstal emilkowalski/skills..."
+echo "[3/7] Menginstal emilkowalski/skills..."
 git clone --depth 1 https://github.com/emilkowalski/skills.git "$TMP_DIR/emilkowalski-skills"
 cp -R "$TMP_DIR/emilkowalski-skills/skills/." "$SKILLS_DIR/"
 
-echo "[4/6] Menginstal Cloudflare Security Audit..."
+echo "[4/7] Menginstal Cloudflare Security Audit..."
 git clone --depth 1 https://github.com/cloudflare/security-audit-skill.git "$TMP_DIR/security-audit-skill"
 cp -R "$TMP_DIR/security-audit-skill/skills/security-audit" "$SKILLS_DIR/"
 
-echo "[5/6] Menginstal obra/superpowers..."
+echo "[5/7] Menginstal obra/superpowers..."
 git clone --depth 1 https://github.com/obra/superpowers.git "$TMP_DIR/superpowers"
 cp -R "$TMP_DIR/superpowers/skills/." "$SKILLS_DIR/"
 
-echo "[6/6] Menginstal amirrhamzh/agents-skills & AGENT_EFFICIENCY.md..."
+echo "[6/7] Menginstal dietrichgebert/ponytail..."
+PONYTAIL_DIR="$TMP_DIR/ponytail"
+git clone --depth 1 https://github.com/dietrichgebert/ponytail.git "$PONYTAIL_DIR"
+if [ -d "$PONYTAIL_DIR/skills" ]; then
+  cp -R "$PONYTAIL_DIR/skills/." "$SKILLS_DIR/"
+elif [ -f "$PONYTAIL_DIR/SKILL.md" ]; then
+  mkdir -p "$SKILLS_DIR/ponytail"
+  for item in "$PONYTAIL_DIR"/* "$PONYTAIL_DIR"/.*; do
+    base="$(basename "$item")"
+    [ "$base" = "." ] || [ "$base" = ".." ] || [ "$base" = ".git" ] || [ "$base" = "AGENTS.md" ] && continue
+    [ -e "$item" ] && cp -R "$item" "$SKILLS_DIR/ponytail/"
+  done
+else
+  while IFS= read -r skill_file; do
+    skill_folder="$(dirname "$skill_file")"
+    if [ "$skill_folder" != "$PONYTAIL_DIR" ]; then
+      cp -R "$skill_folder" "$SKILLS_DIR/"
+    fi
+  done < <(find "$PONYTAIL_DIR" -name "SKILL.md" -not -path "*/.git/*")
+fi
+
+echo "[7/7] Menginstal amirrhamzh/agents-skills & AGENT_EFFICIENCY.md..."
 SCRIPT_DIR=""
 if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -78,5 +99,13 @@ else
 fi
 
 echo ""
-echo "Selesai! Semua skill berhasil diinstal ke: $SKILLS_DIR"
-echo "Langkah berikutnya: jalankan ./setup-symlinks.sh untuk menghubungkan ke OpenCode & Antigravity."
+echo "Semua skill berhasil diinstal ke: $SKILLS_DIR"
+
+# Otomatis jalankan setup-symlinks.sh agar cukup 1x jalan
+if [ -f "$REPO_DIR/setup-symlinks.sh" ]; then
+  echo ""
+  echo "Menjalankan setup-symlinks.sh secara otomatis..."
+  bash "$REPO_DIR/setup-symlinks.sh"
+else
+  echo "Langkah berikutnya: jalankan ./setup-symlinks.sh untuk menghubungkan ke OpenCode & Antigravity."
+fi

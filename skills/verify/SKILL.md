@@ -1,33 +1,43 @@
 ---
 name: verify
-description: Verifikasi hasil akhir aplikasi (build, test, PRD, Tech Stack, Design, Security) dengan membaca AGENTS.md paling awal tanpa membuat file di .agents/. Gunakan saat user menulis "verifikasi hasil", "verify project", "cek hasil akhir", "audit aplikasi", atau "apakah sudah sesuai prd".
-metadata:
-  version: "2.4.0"
+description: Tahap 7 pipeline — Verifikasi menyeluruh sebelum penyelesaian terhadap seluruh dokumen .agents/, review kode & keamanan, serta langkah opsional pembersihan bloat menggunakan Ponytail.
 ---
-# Verify (Tahap 7)
 
-## Koneksi Skill Eksternal
+# Skill: Verify (Tahap Verifikasi Akhir)
 
-Muat skill audit berikut secara berurutan saat memverifikasi hasil akhir:
-- `verification-before-completion` (Superpowers) -> wajib jalankan perintah verifikasi dan baca output aktual sebelum mengklaim lulus.
-- `test-master` (+ `playwright-expert` jika aplikasi web perlu uji E2E) -> validasi unit, integrasi, dan E2E test.
-- `requesting-code-review` (Superpowers) + `code-reviewer` -> audit kualitas, kerapian, dan potensi bug pada kode.
-- `security-reviewer` -> audit celah keamanan cepat terhadap `./.agents/SECURITY.md`, atau jalankan `security-audit` untuk audit mendalam 6 fase berbasis bukti (*confirmed / needs_validation*) pada proyek produksi/kritis.
-- `devops-engineer` & `finishing-a-development-branch` (Superpowers, opsional saat siap rilis/merge) -> cek kesiapan build/deploy serta proses merge, PR, atau pembersihan worktree.
+## Tujuan
+Memastikan seluruh implementasi benar-benar selesai, teruji, aman, dan patuh 100% terhadap seluruh spesifikasi di `./.agents/` sebelum pekerjaan dinyatakan selesai.
 
-## Alur Kerja
+## Urutan Pemeriksaan Wajib
 
-1. **Baca Konteks & Cek Review**: Wajib baca `./AGENTS.md` di root project paling awal, lalu baca `./.agents/PRD.md`, `./.agents/TECHSTACK.md`, `./.agents/DESIGN.md`, `./.agents/SECURITY.md`, dan `./.agents/TASKS.md`. Jika user belum meninjau hasil aplikasi, jalankan `review` terlebih dahulu.
-2. **Jalankan Pemeriksaan Teknis**:
-   - Jalankan `build`, `typecheck`, `lint`, `test`, dan audit kerentanan dependensi di terminal project.
-   - Jika ada error, muat `systematic-debugging` + `debugging-wizard`, perbaiki kode langsung, dan jalankan ulang hingga kode keluar `0`.
-3. **Audit Kesesuaian Spesifikasi**:
-   - **PRD & Tasks**: Semua fitur Must-Have berfungsi penuh dan seluruh ceklis `./.agents/TASKS.md` bertanda `- [x]`.
-   - **Tech Stack & Security** (`security-reviewer` / `security-audit`): Sesuai `./.agents/TECHSTACK.md` & `./.agents/SECURITY.md` (validasi input server, anti-injeksi, anti-XSS/CSRF/IDOR, security headers, tanpa hardcoded secret).
-   - **Design Anti-AI-Slop** (`code-reviewer`): Sesuai `./.agents/DESIGN.md`, 4 state layar lengkap (*Normal/Loading/Empty/Error*), `tabular-nums`, dan responsif.
-4. **Sajikan Laporan Akhir di Chat**: Tampilkan status `LULUS VERIFIKASI (PASSED)`, ringkasan hasil build/test, tabel keterlacakan fitur PRD, checklist kepatuhan Design & Security, serta opsi penyelesaian branch (`finishing-a-development-branch`) atau perintah deploy.
+### 1. Verifikasi Bukti Nyata (`verification-before-completion`)
+- Jalankan ulang *build*, *typecheck*, *linter*, dan seluruh *test suite* secara nyata (bukan asumsi).
+- Pastikan seluruh item di `./.agents/TASKS.md` telah tuntas dan sesuai dengan `./.agents/PRD.md`.
 
-## Aturan
+### 2. Pemeriksaan Desain & Kepatuhan Stack
+- Verifikasi implementasi UI terhadap `./.agents/DESIGN.md`:
+  - Token desain dan komponen UI sesuai spesifikasi.
+  - Seluruh **4 state layar** (*Normal*, *Loading*, *Empty*, *Error*) berfungsi dengan benar.
+  - *Micro-interaction* dan aksesibilitas (navigasi keyboard, kontras, ARIA) terpenuhi.
+- Verifikasi bahwa dependensi dan arsitektur mematuhi `./.agents/TECHSTACK.md`.
 
-- **DILARANG** membuat file `VERIFY.md` di dalam folder `.agents/`.
-- Jangan pernah klaim lulus tanpa benar-benar menjalankan perintah verifikasi di terminal.
+### 3. Review Kode & Audit Keamanan
+- Jalankan **`code-reviewer`** untuk memeriksa kualitas kode, keterbacaan, dan *edge cases*.
+- Jalankan **`security-reviewer`** dan **`security-audit`** (`cloudflare/security-audit-skill`) untuk memverifikasi kepatuhan terhadap `./.agents/SECURITY.md` (validasi input, autentikasi/otorisasi, proteksi rahasia/env, dan *error handling* aman).
+
+### 4. Langkah Opsional Pembersihan Akhir (`ponytail-review` / `ponytail-audit`)
+Setelah seluruh pemeriksaan di langkah 1–3 **lulus**, jalankan `/ponytail-review` atau `/ponytail-audit` secara opsional dengan pembagian peran yang tegas:
+- **Fokus Pembersihan**: Khusus untuk mendeteksi dan memangkas *bloat*, *dead code*, duplikasi tidak perlu, abstraksi berlebihan, dan *technical debt*.
+- **Guardrail Ketat (Dilarang Dilanggar)**: Pembersihan Ponytail **tidak boleh** menghapus atau melemahkan:
+  - Validasi data dan *error handling*.
+  - Kontrol keamanan yang disyaratkan `./.agents/SECURITY.md`.
+  - Aksesibilitas, *micro-interaction*, komponen UI terkunci, atau 4 state layar dari `./.agents/DESIGN.md`.
+  - Fitur atau skenario pengujian yang diwajibkan di `./.agents/PRD.md` dan `./.agents/TASKS.md`.
+- Jika ada perubahan dari langkah pembersihan ini, **wajib jalankan ulang test dan build** (`verification-before-completion`) untuk memastikan tidak ada regresi.
+
+## Format Laporan Verifikasi
+Sajikan ringkasan hasil verifikasi yang mencakup:
+1. Status *build*, *lint*, dan *test* (beserta hasil eksekusi aktual).
+2. Status kepatuhan terhadap `PRD.md`, `TECHSTACK.md`, `DESIGN.md`, `SECURITY.md`, dan `TASKS.md`.
+3. Temuan `code-reviewer`, `security-reviewer`, dan `security-audit` (serta perbaikannya).
+4. Ringkasan hasil `/ponytail-review` / `/ponytail-audit` (jika dijalankan).
