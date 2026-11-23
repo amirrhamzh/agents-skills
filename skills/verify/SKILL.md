@@ -1,43 +1,38 @@
 ---
 name: verify
-description: Tahap 7 pipeline — Verifikasi menyeluruh sebelum penyelesaian terhadap seluruh dokumen .agents/, review kode & keamanan, serta langkah opsional pembersihan bloat menggunakan Ponytail.
+description: Verifikasi hasil akhir aplikasi (build, test, PRD, Tech Stack, Design, Security, plus opsi pembersihan bloat Ponytail) dengan membaca AGENTS.md paling awal tanpa membuat file di .agents/. Gunakan saat user menulis "verifikasi hasil", "verify project", "cek hasil akhir", "audit aplikasi", atau "apakah sudah sesuai prd".
+metadata:
+  version: "2.5.0"
 ---
+# Verify (Tahap 7)
 
-# Skill: Verify (Tahap Verifikasi Akhir)
+## Koneksi Skill Eksternal
 
-## Tujuan
-Memastikan seluruh implementasi benar-benar selesai, teruji, aman, dan patuh 100% terhadap seluruh spesifikasi di `./.agents/` sebelum pekerjaan dinyatakan selesai.
+Muat skill audit berikut secara berurutan:
+- `verification-before-completion` (Superpowers) -> wajib jalankan perintah verifikasi dan cek output aktual sebelum mengklaim lulus.
+- `test-master` (+ `playwright-expert` untuk E2E web) & `systematic-debugging` + `debugging-wizard` (jika ada error).
+- `requesting-code-review` (Superpowers) + `code-reviewer` -> audit kualitas, keterbacaan, dan *edge cases*.
+- `security-reviewer` & `security-audit` (`cloudflare/security-audit-skill`) -> audit kepatuhan terhadap `./.agents/SECURITY.md`.
+- `ponytail-review` / `ponytail-audit` (opsional, hanya setelah langkah 1–3 lulus) -> pembersihan *bloat* & *dead code*.
+- `devops-engineer` & `finishing-a-development-branch` (Superpowers, opsional saat siap rilis/merge) -> cek kesiapan deploy & penyelesaian branch/PR.
 
-## Urutan Pemeriksaan Wajib
+## Alur Kerja
 
-### 1. Verifikasi Bukti Nyata (`verification-before-completion`)
-- Jalankan ulang *build*, *typecheck*, *linter*, dan seluruh *test suite* secara nyata (bukan asumsi).
-- Pastikan seluruh item di `./.agents/TASKS.md` telah tuntas dan sesuai dengan `./.agents/PRD.md`.
+1. **Baca Konteks & Cek Review**: Wajib baca `./AGENTS.md` di root project paling awal, lalu baca `./.agents/PRD.md`, `./.agents/TECHSTACK.md`, `./.agents/DESIGN.md`, `./.agents/SECURITY.md`, dan `./.agents/TASKS.md`. Jika user belum meninjau hasil aplikasi, jalankan `review` terlebih dahulu.
+2. **Verifikasi Bukti Nyata (`verification-before-completion`)**:
+   - Jalankan `build`, `typecheck`, `lint`, `test`, dan audit kerentanan dependensi secara nyata di terminal project (bukan asumsi).
+   - Jika ada error, muat `systematic-debugging` + `debugging-wizard`, perbaiki langsung, dan jalankan ulang hingga kode keluar `0`.
+   - Pastikan seluruh item `./.agents/TASKS.md` bertanda `- [x]` dan seluruh fitur Must-Have di `./.agents/PRD.md` terpenuhi.
+3. **Audit Desain, Tech Stack, Kode & Keamanan**:
+   - **Design & Stack** (`code-reviewer`): Patuh pada `./.agents/TECHSTACK.md` & `./.agents/DESIGN.md` (token desain, komponen UI, 4 state layar *Normal/Loading/Empty/Error*, *micro-interaction*, aksesibilitas/kontras/ARIA, `tabular-nums`, responsif).
+   - **Security** (`security-reviewer` & `security-audit`): Patuh pada `./.agents/SECURITY.md` (validasi input server, auth/RBAC/anti-IDOR, anti-injeksi/XSS/CSRF, security headers, proteksi secret/env, *error handling* aman).
+4. **Opsional — Pembersihan Bloat (`ponytail-review` / `ponytail-audit`)**:
+   - Jalankan hanya setelah langkah 1–3 **lulus**, khusus untuk memangkas *bloat*, *dead code*, duplikasi, dan abstraksi berlebihan.
+   - **Guardrail Ketat**: Dilarang menghapus/melemahkan validasi data, *error handling*, kontrol `SECURITY.md`, aksesibilitas/*micro-interaction*/komponen/4 state layar dari `DESIGN.md`, atau fitur & tes dari `PRD.md`/`TASKS.md`.
+   - Jika ada perubahan dari pembersihan ini, **wajib jalankan ulang `build` dan `test`** (`verification-before-completion`) untuk memastikan nol regresi.
+5. **Sajikan Laporan Akhir di Chat**: Tampilkan status `LULUS VERIFIKASI (PASSED)`, hasil aktual `build`/`lint`/`test`, kepatuhan 5 dokumen `.agents/`, temuan & perbaikan `code-reviewer`/`security-reviewer`/`security-audit`, ringkasan `ponytail-review`/`ponytail-audit` (jika dijalankan), serta opsi `finishing-a-development-branch` atau perintah deploy.
 
-### 2. Pemeriksaan Desain & Kepatuhan Stack
-- Verifikasi implementasi UI terhadap `./.agents/DESIGN.md`:
-  - Token desain dan komponen UI sesuai spesifikasi.
-  - Seluruh **4 state layar** (*Normal*, *Loading*, *Empty*, *Error*) berfungsi dengan benar.
-  - *Micro-interaction* dan aksesibilitas (navigasi keyboard, kontras, ARIA) terpenuhi.
-- Verifikasi bahwa dependensi dan arsitektur mematuhi `./.agents/TECHSTACK.md`.
+## Aturan
 
-### 3. Review Kode & Audit Keamanan
-- Jalankan **`code-reviewer`** untuk memeriksa kualitas kode, keterbacaan, dan *edge cases*.
-- Jalankan **`security-reviewer`** dan **`security-audit`** (`cloudflare/security-audit-skill`) untuk memverifikasi kepatuhan terhadap `./.agents/SECURITY.md` (validasi input, autentikasi/otorisasi, proteksi rahasia/env, dan *error handling* aman).
-
-### 4. Langkah Opsional Pembersihan Akhir (`ponytail-review` / `ponytail-audit`)
-Setelah seluruh pemeriksaan di langkah 1–3 **lulus**, jalankan `/ponytail-review` atau `/ponytail-audit` secara opsional dengan pembagian peran yang tegas:
-- **Fokus Pembersihan**: Khusus untuk mendeteksi dan memangkas *bloat*, *dead code*, duplikasi tidak perlu, abstraksi berlebihan, dan *technical debt*.
-- **Guardrail Ketat (Dilarang Dilanggar)**: Pembersihan Ponytail **tidak boleh** menghapus atau melemahkan:
-  - Validasi data dan *error handling*.
-  - Kontrol keamanan yang disyaratkan `./.agents/SECURITY.md`.
-  - Aksesibilitas, *micro-interaction*, komponen UI terkunci, atau 4 state layar dari `./.agents/DESIGN.md`.
-  - Fitur atau skenario pengujian yang diwajibkan di `./.agents/PRD.md` dan `./.agents/TASKS.md`.
-- Jika ada perubahan dari langkah pembersihan ini, **wajib jalankan ulang test dan build** (`verification-before-completion`) untuk memastikan tidak ada regresi.
-
-## Format Laporan Verifikasi
-Sajikan ringkasan hasil verifikasi yang mencakup:
-1. Status *build*, *lint*, dan *test* (beserta hasil eksekusi aktual).
-2. Status kepatuhan terhadap `PRD.md`, `TECHSTACK.md`, `DESIGN.md`, `SECURITY.md`, dan `TASKS.md`.
-3. Temuan `code-reviewer`, `security-reviewer`, dan `security-audit` (serta perbaikannya).
-4. Ringkasan hasil `/ponytail-review` / `/ponytail-audit` (jika dijalankan).
+- **DILARANG** membuat file `VERIFY.md` di dalam folder `.agents/`.
+- Jangan pernah klaim lulus tanpa benar-benar menjalankan perintah verifikasi di terminal.
